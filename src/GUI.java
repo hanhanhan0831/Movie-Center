@@ -18,8 +18,8 @@ public class GUI extends JFrame implements ActionListener{
 	static JFrame folderSelect;
 	// ======================= Constructors
 	public GUI() {
-		setSize(500, 800);
-		setTitle("Checklist v1.0");
+		setSize(1000, 1000);
+		setTitle("Movie Center");
 		setJMenuBar(menuBar);
 		add(panel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -56,8 +56,8 @@ public class GUI extends JFrame implements ActionListener{
 //		file.add(removeFolder);
 //		help.add(howTo);
 //		help.add(contactMe);
-//		menuBar.add(file);
-//		menuBar.add(help);
+		menuBar.add(file);
+		menuBar.add(help);
 //		
 //		newFolder.setActionCommand("newFolder");
 //		openFolder.setActionCommand("openFolder");
