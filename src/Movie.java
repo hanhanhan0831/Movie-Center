@@ -54,5 +54,11 @@ public class Movie {
 			this.runtime = runtime;
 		}
 
-		
+		protected String getMovieType() {
+			return movieType;
+		}
+
+		protected void setMovieType(String movieType) {
+			this.movieType = movieType;
+		}
 }
