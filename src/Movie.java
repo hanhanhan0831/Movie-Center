@@ -2,15 +2,15 @@
 public class Movie {
 
 		//============================== Properties
-		String name;
-		String genre;
-		String director;
+		private String name;
+		private String genre;
+		private String director;
 		private String movieType;
-		int runtime;
+		private int runtime;
 
 		//============================== Constructors
-		public Movie(String title, String genre, String director, int runtime) {
-			setName(name);
+		protected Movie(String title, String genre, String director, int runtime) {
+			setName(title);
 			setGenre(genre);
 			setDirector(director);
 			setRuntime(runtime);
@@ -22,7 +22,7 @@ public class Movie {
 		}
 
 		//============================== Getters/Setters
-		protected String getName() {
+		public String getName() {
 			return name;
 		}
 
@@ -30,7 +30,7 @@ public class Movie {
 			this.name = name;
 		}
 
-		protected String getGenre() {
+		public String getGenre() {
 			return genre;
 		}
 
@@ -38,7 +38,7 @@ public class Movie {
 			this.genre = genre;
 		}
 
-		protected String getDirector() {
+		public String getDirector() {
 			return director;
 		}
 
@@ -46,7 +46,7 @@ public class Movie {
 			this.director = director;
 		}
 
-		protected int getRuntime() {
+		public int getRuntime() {
 			return runtime;
 		}
 
@@ -54,11 +54,16 @@ public class Movie {
 			this.runtime = runtime;
 		}
 
-		protected String getMovieType() {
+		public String getMovieType() {
 			return movieType;
 		}
 
 		protected void setMovieType(String movieType) {
 			this.movieType = movieType;
 		}
+		
+		protected String forFile() {
+			return this.name+","+this.director+","+this.genre+","+this.runtime+","+this.movieType+"\n";
+		}
+		
 }
