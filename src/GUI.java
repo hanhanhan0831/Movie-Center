@@ -15,8 +15,9 @@ public class GUI extends JFrame implements ActionListener{
 	// ======================= Parameters
 	static JPanel panel = new JPanel();
 	static JMenuBar menuBar = new JMenuBar();
-	static JFrame folderSelect;
+//	static JFrame folderSelect;
 	static ArrayList<Movie> movieList = new ArrayList<Movie>();
+	protected HashMap<Account, String> userList = new HashMap<Account, String>();
 	// ======================= Constructors
 	public GUI() {
 		setSize(1000, 1000);
