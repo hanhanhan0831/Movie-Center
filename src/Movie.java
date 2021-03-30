@@ -62,8 +62,8 @@ public class Movie {
 			this.movieType = movieType;
 		}
 		
-		
 		protected String forFile() {
 			return this.name+","+this.director+","+this.genre+","+this.runtime+","+this.movieType+"\n";
 		}
+		
 }
