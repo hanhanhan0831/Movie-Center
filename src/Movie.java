@@ -6,10 +6,10 @@ public class Movie {
 		private String genre;
 		private String director;
 		private String movieType;
-		private int runtime;
+		private double runtime;
 
 		//============================== Constructors
-		protected Movie(String title, String genre, String director, int runtime) {
+		protected Movie(String title, String genre, String director, double runtime) {
 			setName(title);
 			setGenre(genre);
 			setDirector(director);
@@ -46,11 +46,11 @@ public class Movie {
 			this.director = director;
 		}
 
-		public int getRuntime() {
+		public double getRuntime() {
 			return runtime;
 		}
 
-		protected void setRuntime(int runtime) {
+		protected void setRuntime(double runtime) {
 			this.runtime = runtime;
 		}
 
