@@ -48,14 +48,14 @@ public class MovieData {
 	
 	
 	
-	protected static ArrayList<Movie> getMoviesByTitle(String title) {
+	protected static ArrayList<Movie> getMoviesByTitle(String search) {
 		ArrayList<Movie> mList = new ArrayList<>();
 		try {
 			Scanner reader = new Scanner(data);
 			while(reader.hasNextLine()) {
 				String line = reader.nextLine();
 				String[] pieces = line.split(",");
-				if(title.contains(pieces[0])) {
+				if(pieces[0].contains(search)) {
 					//Index 0 is title, Index 1 is director, Index 2 is genre, Index 3 is runtime, Index 4 is type
 					Movie m = new Movie(pieces[0], pieces[2], pieces[1], Double.parseDouble(pieces[3]));
 					mList.add(m);
