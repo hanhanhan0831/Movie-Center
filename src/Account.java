@@ -23,4 +23,9 @@ public class Account {
 		this.username = username;
 	}
 
+	@Override
+	public boolean equals(Object input) {
+		// TODO Auto-generated method stub
+		return username.equalsIgnoreCase((String) input);
+	}
 }
