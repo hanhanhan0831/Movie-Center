@@ -65,5 +65,10 @@ public class Movie {
 		protected String forFile() {
 			return this.name+","+this.director+","+this.genre+","+this.runtime+","+this.movieType+"\n";
 		}
+		@Override
+		public String toString() {
+		// TODO Auto-generated method stub
+		return "" + getName() + ", " + getMovieType() + ", " + "Year Released";
+		}
 		
 }

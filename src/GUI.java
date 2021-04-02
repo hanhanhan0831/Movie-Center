@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,20 +21,24 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
-public class GUI extends JFrame implements ActionListener{
+public class GUI extends JFrame implements ActionListener {
 	// ======================= Parameters
 	static JPanel panel = new JPanel();
 	static JMenuBar menuBar = new JMenuBar();
-//	static JFrame folderSelect;
+	static JFrame movieSelect;
 	static JFrame loginWindow;
 	static MovieCenterDB database = new MovieCenterDB("db.txt");
+
 	// ======================= Constructors
 	public GUI() {
-		setSize(1000, 1000);
+		setSize(500, 500);
 		setTitle("Movie Center");
 		setJMenuBar(menuBar);
 		add(panel);
@@ -40,8 +46,7 @@ public class GUI extends JFrame implements ActionListener{
 		setAlwaysOnTop(true);
 		setVisible(true);
 	}
-	
-	
+
 	// ======================= Getters/Setters
 	// ======================= Methods
 	public static void main(String[] args) {
@@ -50,79 +55,74 @@ public class GUI extends JFrame implements ActionListener{
 		new GUI();
 		openLoginWindow();
 	}
+
 	public static void buildPanel() {
-		
+		TitledBorder border = new TitledBorder("Welcome to Movie Center");
+	    border.setTitleJustification(TitledBorder.CENTER);
+	    border.setTitlePosition(TitledBorder.TOP);
+		panel.setBorder(border);
+
+//		JList<String> movieList = new JList<String>(database.movieList.toArray(new String[database.movieList.size()]));
+		String[] arr = {"Titanic", "The Terminator", "Toy Story", "Citizen Kane",
+				"Amazing Grace", "Casablance", "Finding Nemo", "Parasite",
+				"Selma", "Alien", "Get Out", "The Godfather",
+				"Good Will Hunting", "Hamilton", "JAWS", "Moonlight",
+				"Once Upon a Time in Hollywood", "Sunset Boulevard", "Toy Story 3", "Up",
+				"The Wizard of Oz", "Aliens", "Knives Out", "Monty Python and the Holy Grail",
+				"Schindler's List", "Spirited Away", "Black Panther", "Back to the Future"};
+		JList<String> movieList = new JList<String>(arr);
+		JScrollPane scrollPane = new JScrollPane(movieList);
+		scrollPane.setVisible(true);
+		movieList.setLayoutOrientation(JList.VERTICAL);
+		panel.add(movieList);
+		panel.add(scrollPane, BorderLayout.CENTER);
 	}
+
 	public static void buildMenuBar() {
 		// =================== Objects
 		JMenu file = new JMenu("File");
 		JMenu help = new JMenu("Help");
-//		JMenuItem newFolder = new JMenuItem("New");
-//		JMenuItem openFolder = new JMenuItem("Open");
-//		JMenuItem saveFolder = new JMenuItem("Save");
-//		JMenuItem saveAsFolder = new JMenuItem("Save As...");
-//		JMenuItem removeFolder = new JMenuItem("Remove");
-//		JMenuItem howTo = new JMenuItem("How To...");
-//		JMenuItem contactMe = new JMenuItem("Contact Me");
-//		file.add(newFolder);
-//		file.add(openFolder);
-//		file.add(saveFolder);
-//		file.add(saveAsFolder);
-//		file.add(removeFolder);
-//		help.add(howTo);
-//		help.add(contactMe);
+		JMenuItem howTo = new JMenuItem("How To...");
+		JMenuItem contactMe = new JMenuItem("Contact Us");
+		help.add(howTo);
+		help.add(contactMe);
 		menuBar.add(file);
 		menuBar.add(help);
-//		
-//		newFolder.setActionCommand("newFolder");
-//		openFolder.setActionCommand("openFolder");
-//		saveFolder.setActionCommand("saveFolder");
-//		saveAsFolder.setActionCommand("saveAsFolder");
-//		removeFolder.setActionCommand("removeFolder");
-//		howTo.setActionCommand("howTo");
-//		contactMe.setActionCommand("contactMe");
-	}
 
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		switch (cmd) {
+		// From a previous project, use this to manage any actions done in JPanel i.e. movie selection
 //		case "newFolder":
 //			newFolderWindow();
 //			break;
-//		case "openFolder":
-//			openFolderWindow();
-//			break;
 		}
-		
+
 	}
 
 	private static void openLoginWindow() {
 		loginWindow = new JFrame("Login or Create Account:");
 		LoginDialog loginDlg = new LoginDialog(loginWindow);
-        loginDlg.setVisible(true);
-        // if logon successfully
-        if(loginDlg.loginSuccess()){
-//            log.setText("Hi " + loginDlg.getUn() + "!");
-        }
-        loginWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loginWindow.setSize(300, 100);
-        loginWindow.setLayout(new FlowLayout());
-//        loginWindow.getContentPane().add(btnLogin);
-        loginWindow.setVisible(true);
+		loginDlg.setVisible(true);
+		loginWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginWindow.setSize(300, 100);
+		loginWindow.setLayout(new FlowLayout());
+		loginWindow.setVisible(true);
 	}
+
 	@SuppressWarnings("unlikely-arg-type")
 	protected static boolean authenticate(String username, String password) {
 		for (Account a : database.userList.keySet()) {
 			if (a.equals(username) && database.userList.get(a).equals(password)) {
 				return true;
-			} 
+			}
 		}
 		return false;
 	}
 
-	
 }
 
 class LoginDialog extends JDialog {
@@ -134,7 +134,7 @@ class LoginDialog extends JDialog {
 	private JButton newAcntBtn;
 	private JButton cancelBtn;
 	private boolean login;
-	
+
 	public LoginDialog(JFrame parent) {
 		super(parent, "Login", true);
 
@@ -167,85 +167,92 @@ class LoginDialog extends JDialog {
 		cs.gridwidth = 2;
 		panel.add(pwField, cs);
 		panel.setBorder(new LineBorder(Color.GRAY));
-		
+
 		loginBtn = new JButton("Login");
 		loginBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (GUI.authenticate(getUn(), getPw())) {
-					JOptionPane.showMessageDialog(LoginDialog.this,  "Hi " + getUn() + "! You have successfully logged in.",
-							"Login", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(LoginDialog.this,
+							"Hi " + getUn() + "! You have successfully logged in.", "Login",
+							JOptionPane.INFORMATION_MESSAGE);
 					login = true;
 					dispose();
 				} else {
-					JOptionPane.showMessageDialog(LoginDialog.this, "Invalid username or password",
-							"Login", JOptionPane.ERROR_MESSAGE);
-					
+					JOptionPane.showMessageDialog(LoginDialog.this, "Invalid username or password", "Login",
+							JOptionPane.ERROR_MESSAGE);
+
 					unField.setText("");
 					pwField.setText("");
 					login = false;
 				}
 			}
-			
+
 		});
-		
+
 		cancelBtn = new JButton("Cancel");
-        cancelBtn.addActionListener(new ActionListener() {
- 
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                System.exit(EXIT_ON_CLOSE);
-            }
-        });
-        
-        newAcntBtn = new JButton("New Account");
-        newAcntBtn.addActionListener(new ActionListener() {
+		cancelBtn.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				System.exit(EXIT_ON_CLOSE);
+			}
+		});
+
+		newAcntBtn = new JButton("New Account");
+		newAcntBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!(getUn().equals("") && !(getPw().equals("")))) {
 					GUI.database.userList.put(new Account(UserType.USER, getUn()), getPw());
-					JOptionPane.showMessageDialog(LoginDialog.this,  "Hi " + getUn() + "! You have successfully created an account.",
-							"Login", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(LoginDialog.this,
+							"Hi " + getUn() + "! You have successfully created an account.", "Login",
+							JOptionPane.INFORMATION_MESSAGE);
 					login = true;
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(LoginDialog.this, "Make sure you create a new Username and Password!",
 							"Login", JOptionPane.ERROR_MESSAGE);
-					
+
 					unField.setText("");
 					pwField.setText("");
 					login = false;
 				}
-				
-			}
-        	
-        });
-        
-        
-        JPanel bp = new JPanel();
-        bp.add(loginBtn);
-        bp.add(cancelBtn);
-        bp.add(newAcntBtn);
- 
-        getContentPane().add(panel, BorderLayout.CENTER);
-        getContentPane().add(bp, BorderLayout.PAGE_END);
- 
-        pack();
-        setResizable(false);
-        setLocationRelativeTo(parent);
-    }
- 
-    public String getUn() {
-        return unField.getText().trim();
-    }
- 
-    public String getPw() {
-        return new String(pwField.getPassword());
-    }
-    public boolean loginSuccess() {
-        return login;
-    }
 
+			}
+
+		});
+
+		JPanel bp = new JPanel();
+		bp.add(loginBtn);
+		bp.add(cancelBtn);
+		bp.add(newAcntBtn);
+
+		getContentPane().add(panel, BorderLayout.CENTER);
+		getContentPane().add(bp, BorderLayout.PAGE_END);
+
+		pack();
+		setResizable(false);
+		setLocationRelativeTo(parent);
+	}
+
+	public String getUn() {
+		return unField.getText().trim();
+	}
+
+	public String getPw() {
+		return new String(pwField.getPassword());
+	}
+
+	public boolean loginSuccess() {
+		return login;
+	}
+
+}
+
+class MovieWindow{
+	 //Separate class for pulling in and managing all the movie data
+	
 }
