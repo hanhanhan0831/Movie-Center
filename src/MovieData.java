@@ -18,6 +18,7 @@ public class MovieData {
 		}
 	}
 	
+	
 	protected static void storeMovies(Movie[] movies) {
 		for(Movie m : movies) {
 			storeMovie(m);
@@ -68,6 +69,15 @@ public class MovieData {
 		return mList;
 	}
 	
+	protected static ArrayList<Movie> getMoviesByTitle(String search, Movie[] movies){
+		ArrayList<Movie> mList = new ArrayList<>();
+		for(Movie m : movies) {
+			if(m.getName().contains(search)) {
+				mList.add(m);
+			}
+		}
+		return mList;
+	}
 	
 	
 	protected static ArrayList<Movie> getMoviesByDirector(String director) {
@@ -90,6 +100,16 @@ public class MovieData {
 		return mList;
 	}
 	
+	
+	protected static ArrayList<Movie> getMoviesByDirector(String director, Movie[] movies){
+		ArrayList<Movie> mList = new ArrayList<>();
+		for(Movie m : movies) {
+			if(m.getDirector().equals(director)) {
+				mList.add(m);
+			}
+		}
+		return mList;
+	}
 	
 	
 	protected static ArrayList<Movie> getMoviesByGenre(String genre) {
@@ -114,7 +134,20 @@ public class MovieData {
 	
 	
 	
-	protected static ArrayList<Movie> getMoviesByRuntime(int max, int min) {
+	protected static ArrayList<Movie> getMoviesByGenre(String genre, Movie[] movies){
+		ArrayList<Movie> mList = new ArrayList<>();
+		for(Movie m : movies) {
+			if(m.getGenre().equals(genre)) {
+				mList.add(m);
+			}
+		}
+		return mList;
+	}
+	
+	
+	
+	
+	protected static ArrayList<Movie> getMoviesByRuntime(double max, double min) {
 		ArrayList<Movie> mList = new ArrayList<>();
 		try {
 			Scanner reader = new Scanner(data);
@@ -137,6 +170,18 @@ public class MovieData {
 	
 	
 	
+	protected static ArrayList<Movie> getMoviesByRuntime(double max, double min, Movie[] movies){
+		ArrayList<Movie> mList = new ArrayList<>();
+		for(Movie m : movies) {
+			if(m.getRuntime()<=max && m.getRuntime()>=min) {
+				mList.add(m);
+			}
+		}
+		return mList;
+	}
+	
+	
+	
 	protected static ArrayList<Movie> getMoviesByType(String type) {
 		ArrayList<Movie> mList = new ArrayList<>();
 		try {
@@ -153,6 +198,17 @@ public class MovieData {
 			reader.close();
 		}catch(FileNotFoundException e) {
 			e.printStackTrace();
+		}
+		return mList;
+	}
+	
+	
+	protected static ArrayList<Movie> getMoviesByType(String type, Movie[] movies){
+		ArrayList<Movie> mList = new ArrayList<>();
+		for(Movie m : movies) {
+			if(m.getMovieType().equals(type)) {
+				mList.add(m);
+			}
 		}
 		return mList;
 	}
