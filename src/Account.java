@@ -28,4 +28,7 @@ public class Account {
 		// TODO Auto-generated method stub
 		return username.equalsIgnoreCase((String) input);
 	}
+	protected String forFileNoPasswordNoEndLine() {
+		return username+","+type+",";
+	}
 }
