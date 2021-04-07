@@ -26,5 +26,13 @@ class UserDataTest {
 		UserData.removeAccount(a);
 		assertEquals(UserData.login("testUser", "testPassword"),null);
 	}
+	
+	@Test
+	void testAccountExists() {
+		Account a = new Account(UserType.USER, "username");
+		assertTrue(UserData.accountExists(a));
+		Account a2 = new Account(UserType.USER, "doesNotExist");
+		assertFalse(UserData.accountExists(a2));
+	}
 
 }
