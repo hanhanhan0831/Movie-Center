@@ -22,8 +22,6 @@ public class UserData {
 			writer.close();
 		}catch(IOException e) {
 			e.printStackTrace();
-		}catch(InputMismatchException e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -47,7 +45,7 @@ public class UserData {
 	}
 	
 	
-	private static boolean accountExists(Account a) {
+	protected static boolean accountExists(Account a) {
 		try {
 			Scanner reader = new Scanner(data);
 			String line;
