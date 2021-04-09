@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -200,14 +201,13 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				String password = String.valueOf(pwField.getPassword());
 				Account a = new Account(UserType.USER, username);
 				//Will then call The UserData class once implemented
-				UserData.addNewAccount(a, password);
-				UserType type = UserData.login(username, password);
-				if(type == null) {
-					//login fails
-				}else {
-					GUIVersion2.User = new Account(type, username);
-					loginWindow.dispose();
+				try {
+					UserData.addNewAccount(a, password);
+				}catch(InputMismatchException error) {
+					//Handle account failing to be added
 				}
+				GUIVersion2.User = new Account(UserType.USER, username);
+				loginWindow.dispose();
 			}
 		});
 
