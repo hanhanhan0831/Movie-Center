@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -45,7 +46,6 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		setJMenuBar(menuBar);
 		add(panel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setAlwaysOnTop(true);
 		setVisible(true);
 	}
 
@@ -67,11 +67,11 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		//------- Display all movies to start
 		
 		ArrayList<Movie> allMovies = MovieData.getAllMovies();
-		String[] arr = new String[allMovies.size()];
+		Movie[] arr = new Movie[allMovies.size()];
 		for(int i=0;i<arr.length;i++) {
-			arr[i] = allMovies.get(i).toString();
+			arr[i] = allMovies.get(i);
 		}
-		JList<String> movieList = new JList<>(arr);
+		JList<Movie> movieList = new JList<>(arr);
 		JScrollPane scrollPane = new JScrollPane(movieList);
 		scrollPane.setVisible(true);
 		movieList.setLayoutOrientation(JList.VERTICAL);
@@ -96,7 +96,6 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				//Apply Filter and update Movies shown
 			}
 		});
-		
 		filterPanel.add(filterLabel, BorderLayout.NORTH);
 		filterPanel.add(filters, BorderLayout.CENTER);
 		filterPanel.add(textLabel, BorderLayout.SOUTH);
@@ -104,6 +103,17 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		filterPanel.add(apply);
 		
 		panel.add(filterPanel, BorderLayout.EAST);
+		
+		
+		//------ Visit movie page
+		JButton selectMovie = new JButton("View movie details");
+		selectMovie.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openMoviePage(movieList.getSelectedValue());
+			}
+		});
+		panel.add(selectMovie, BorderLayout.WEST);
 
 	}
 
@@ -120,30 +130,115 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-		switch (cmd) {
-		// From a previous project, use this to manage any actions done in JPanel i.e. movie selection
-//		case "newFolder":
-//			newFolderWindow();
-//			break;
-		}
-
-	}
 
 	private static void openLoginWindow() {
 		loginWindow = new JFrame("Login or Create Account:");
-		LoginDialog loginDlg = new LoginDialog(loginWindow);
-		loginDlg.setVisible(true);
-		loginWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loginWindow.setSize(300, 100);
+		loginWindow.setSize(300, 200);
 		loginWindow.setLayout(new FlowLayout());
+		
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints cs = new GridBagConstraints();
+
+		cs.fill = GridBagConstraints.HORIZONTAL;
+
+		JLabel unLabel = new JLabel("Username: ");
+		cs.gridx = 0;
+		cs.gridy = 0;
+		cs.gridwidth = 1;
+		panel.add(unLabel, cs);
+
+		JTextField unField = new JTextField(20);
+		cs.gridx = 1;
+		cs.gridy = 0;
+		cs.gridwidth = 2;
+		panel.add(unField, cs);
+
+		JLabel pwLabel = new JLabel("Password: ");
+		cs.gridx = 0;
+		cs.gridy = 1;
+		cs.gridwidth = 1;
+		panel.add(pwLabel, cs);
+
+		JPasswordField pwField = new JPasswordField(20);
+		cs.gridx = 1;
+		cs.gridy = 1;
+		cs.gridwidth = 2;
+		panel.add(pwField, cs);
+		panel.setBorder(new LineBorder(Color.GRAY));
+
+		JButton loginBtn = new JButton("Login");
+		loginBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Will check fields were filled
+				String username = unField.getText();
+				String password = String.valueOf(pwField.getPassword());
+				//Will then call The UserData class once implemented
+				UserType type = UserData.login(username, password);
+				if(type == null) {
+					//login fails
+					loginWindow.dispose();
+				}else {
+					GUIVersion2.User = new Account(type, username);
+					loginWindow.dispose();
+				}
+			}
+		});
+
+		JButton cancelBtn = new JButton("Cancel");
+		cancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loginWindow.dispose();
+			}
+		});
+
+		JButton newAcntBtn = new JButton("New Account");
+		newAcntBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Will check fields were filled
+				String username = unField.getText();
+				String password = String.valueOf(pwField.getPassword());
+				Account a = new Account(UserType.USER, username);
+				//Will then call The UserData class once implemented
+				UserData.addNewAccount(a, password);
+				UserType type = UserData.login(username, password);
+				if(type == null) {
+					//login fails
+				}else {
+					GUIVersion2.User = new Account(type, username);
+					loginWindow.dispose();
+				}
+			}
+		});
+
+		JPanel bp = new JPanel();
+		bp.add(loginBtn);
+		bp.add(cancelBtn);
+		bp.add(newAcntBtn);
+		
+		loginWindow.add(panel);
+		loginWindow.add(bp);
+		
+		
 		loginWindow.setVisible(true);
 	}
 	
 	private static void openMoviePage(Movie m) {
 		//Create a new JFrame that displays the page for a single movie
+		JFrame movieWindow = new JFrame(m.getName());
+		JLabel movieTitle = new JLabel("Movie Title: " + m.getName());
+		JLabel movieDirector = new JLabel("Directed By: " + m.getDirector());
+		JLabel movieGenre = new JLabel("Genre: " + m.getGenre());
+		JLabel movieRun = new JLabel("Runtime: "+m.getRuntime());
+		JLabel movieRelease = new JLabel("Released in: "+m.getYearReleased());
+		movieWindow.setSize(500,500);
+		movieWindow.setLayout(new GridLayout(0,1));
+		movieWindow.add(movieTitle);
+		movieWindow.add(movieDirector);
+		movieWindow.add(movieGenre);
+		movieWindow.add(movieRun);
+		movieWindow.add(movieRelease);
+		movieWindow.setVisible(true);
 	}
 	
 	private static void openFavoritesPage() {
@@ -157,83 +252,3 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 
 }
 
-class LoginDialog extends JDialog {
-	private JTextField unField;
-	private JPasswordField pwField;
-	private JLabel unLabel;
-	private JLabel pwLabel;
-	private JButton loginBtn;
-	private JButton newAcntBtn;
-	private JButton cancelBtn;
-
-	public LoginDialog(JFrame parent) {
-		super(parent, "Login", true);
-
-		JPanel panel = new JPanel(new GridBagLayout());
-		GridBagConstraints cs = new GridBagConstraints();
-
-		cs.fill = GridBagConstraints.HORIZONTAL;
-
-		unLabel = new JLabel("Username: ");
-		cs.gridx = 0;
-		cs.gridy = 0;
-		cs.gridwidth = 1;
-		panel.add(unLabel, cs);
-
-		unField = new JTextField(20);
-		cs.gridx = 1;
-		cs.gridy = 0;
-		cs.gridwidth = 2;
-		panel.add(unField, cs);
-
-		pwLabel = new JLabel("Password: ");
-		cs.gridx = 0;
-		cs.gridy = 1;
-		cs.gridwidth = 1;
-		panel.add(pwLabel, cs);
-
-		pwField = new JPasswordField(20);
-		cs.gridx = 1;
-		cs.gridy = 1;
-		cs.gridwidth = 2;
-		panel.add(pwField, cs);
-		panel.setBorder(new LineBorder(Color.GRAY));
-
-		loginBtn = new JButton("Login");
-		loginBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//Will check fields were filled
-				//Will then call The UserData class once implemented
-			}
-		});
-
-		cancelBtn = new JButton("Cancel");
-		cancelBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				parent.dispose();
-			}
-		});
-
-		newAcntBtn = new JButton("New Account");
-		newAcntBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Will check fields were filled
-				//Will then call The UserData class once implemented
-			}
-		});
-
-		JPanel bp = new JPanel();
-		bp.add(loginBtn);
-		bp.add(cancelBtn);
-		bp.add(newAcntBtn);
-
-		getContentPane().add(panel, BorderLayout.CENTER);
-		getContentPane().add(bp, BorderLayout.PAGE_END);
-
-		pack();
-		setResizable(false);
-		setLocationRelativeTo(parent);
-	}
-
-}
