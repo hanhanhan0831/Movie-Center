@@ -40,4 +40,9 @@ public class Comment {
 		else throw new IllegalArgumentException("Rating must be between 0 and 10");
 		
 	}
+	@Override
+	public String toString() {
+		return user + ":"+text+" :"+rating+"/10";
+		
+	}
 }
