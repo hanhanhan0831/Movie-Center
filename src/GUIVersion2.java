@@ -13,6 +13,7 @@ import java.util.InputMismatchException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -26,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -39,6 +41,9 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	static JFrame movieSelect;
 	static JFrame loginWindow;
 	static Account User = null;
+	static JList<Movie> movieList;
+	static JScrollPane movieScrollPane;
+	static DefaultListModel<Movie> model = new DefaultListModel<>();
 
 	// ======================= Constructors
 	public GUIVersion2() {
@@ -72,12 +77,13 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		for(int i=0;i<arr.length;i++) {
 			arr[i] = allMovies.get(i);
 		}
-		JList<Movie> movieList = new JList<>(arr);
-		JScrollPane scrollPane = new JScrollPane(movieList);
-		scrollPane.setVisible(true);
-		movieList.setLayoutOrientation(JList.VERTICAL);
-		//panel.add(movieList);
-		panel.add(scrollPane, BorderLayout.CENTER);
+		movieList = new JList<Movie>(model);
+		for(Movie m : arr) {
+			model.addElement(m);
+		}
+		movieScrollPane = new JScrollPane(movieList);
+		movieScrollPane.setVisible(true);
+		panel.add(movieScrollPane, BorderLayout.CENTER);
 		
 		
 		//--------Filtering Movies
@@ -87,14 +93,49 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		JScrollPane filters = new JScrollPane(filterList);
 		filters.setPreferredSize(new Dimension(100,50));
 		JPanel filterPanel = new JPanel();
-		filterPanel.setPreferredSize(new Dimension(125, 250));
+		filterPanel.setPreferredSize(new Dimension(125, 275));
 		JTextField filterText = new JTextField(10);
 		JLabel textLabel = new JLabel("Search Term:");
 		JButton apply = new JButton("Apply Filter");
+		JTextArea directions = new JTextArea();
+		directions.append("To filter by runtime\nand year. ");
+		directions.append("Enter\ntwo comma\nseperated numbers,\n");
+		directions.append("Maximum and then\nminimum");
+		directions.setEditable(false);
 		apply.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Apply Filter and update Movies shown
+				String filterChoice = filterList.getSelectedValue();
+				ArrayList<Movie> results = new ArrayList<>();
+				switch(filterChoice) {
+				case "title":
+					results = MovieData.getMoviesByTitle(filterText.getText());
+					break;
+				case "director":
+					results = MovieData.getMoviesByDirector(filterText.getText());
+					break;
+				case "runtime":
+					String[] temp = filterText.getText().split(",");
+					results = MovieData.getMoviesByRuntime(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
+					break;
+				case "genre":
+					results = MovieData.getMoviesByGenre(filterText.getText());
+					break;
+				case "year":
+					String[] temp2 = filterText.getText().split(",");
+					results = MovieData.getMoviesByYear(Integer.parseInt(temp2[0]), Integer.parseInt(temp2[1]));
+					break;
+				}
+				
+				Movie[] array = new Movie[results.size()];
+				for(int i=0;i<array.length;i++) {
+					array[i] = results.get(i);
+				}
+				model.removeAllElements();
+				for(Movie m : array) {
+					model.addElement(m);
+				}
 			}
 		});
 		filterPanel.add(filterLabel, BorderLayout.NORTH);
@@ -102,7 +143,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		filterPanel.add(textLabel, BorderLayout.SOUTH);
 		filterPanel.add(filterText, BorderLayout.SOUTH);
 		filterPanel.add(apply);
-		
+		filterPanel.add(directions);
 		panel.add(filterPanel, BorderLayout.EAST);
 		
 		
@@ -247,6 +288,12 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	
 	private static void openRatingsPage() {
 		//Create a new JFrame that displays the active user's ratings on movies
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
