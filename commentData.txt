@@ -1,0 +1,2 @@
+movie|delimiter|anotherUser|delimiter|another test|delimiter|6.8
+anotherMovie|delimiter|username|delimiter|third test|delimiter|7.2
