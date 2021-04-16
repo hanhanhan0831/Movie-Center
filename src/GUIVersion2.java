@@ -7,10 +7,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Vector;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -33,8 +37,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-@SuppressWarnings("serial")
-public class GUIVersion2 extends JFrame implements ActionListener {
+public class GUIVersion2 extends JFrame implements ActionListener{
 	// ======================= Parameters
 	static JPanel panel = new JPanel();
 	static JMenuBar menuBar = new JMenuBar();
@@ -163,13 +166,43 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		// =================== Objects
 		JMenu file = new JMenu("File");
 		JMenu help = new JMenu("Help");
+		JMenuItem login = new JMenuItem("Login");
 		JMenuItem howTo = new JMenuItem("How To...");
 		JMenuItem contactMe = new JMenuItem("Contact Us");
 		help.add(howTo);
 		help.add(contactMe);
+		file.add(login);
 		menuBar.add(file);
 		menuBar.add(help);
 
+		
+		howTo.setActionCommand("howTo");
+		contactMe.setActionCommand("contactUs");
+		login.setActionCommand("login");
+		
+		//Trying to figure out how to make the action listeners work bc they dont work
+//		menuBar.add(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String cmd = e.getActionCommand();
+//				switch (cmd) {
+//				case "login":
+//					System.out.println("jauiosafhj");
+//					loginWindow.setVisible(true);
+//					break;
+//					
+//				case "contactUs":
+//					try {
+//						java.awt.Desktop.getDesktop().browse(new URI("https://github.com/hanhanhan0831/Movie-Center"));
+//					} catch (IOException | URISyntaxException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//					break;
+//				}
+//			}
+//		});
 	}
 
 
@@ -215,11 +248,14 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				//Will check fields were filled
 				String username = unField.getText();
 				String password = String.valueOf(pwField.getPassword());
-				//Will then call The UserData class once implemented
+				//V. 1 of login system
 				UserType type = UserData.login(username, password);
 				if(type == null) {
 					//login fails
 					loginWindow.dispose();
+					//Alerts the user that they couldn't log in
+					//Tells user to use File -> Login
+					JOptionPane.showMessageDialog(null, "Unable to login user.\nPlease use File -> Login to create a new account\nor try logging in again.");
 				}else {
 					GUIVersion2.User = new Account(type, username);
 					loginWindow.dispose();
@@ -231,6 +267,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loginWindow.dispose();
+				JOptionPane.showMessageDialog(null, "Certain functionality will not be usable without login.\nPlease use File -> Login to create a new account\nor try logging in again.");
 			}
 		});
 
@@ -246,6 +283,8 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 					UserData.addNewAccount(a, password);
 				}catch(InputMismatchException error) {
 					//Handle account failing to be added
+					JOptionPane.showMessageDialog(null, "Unable to create user.\nPlease use File -> Login to create a new account\nor try logging in again.");
+
 				}
 				GUIVersion2.User = new Account(UserType.USER, username);
 				loginWindow.dispose();
@@ -292,8 +331,22 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		String cmd = e.getActionCommand();
+		switch (cmd) {
+		case "login":
+			System.out.println("jauiosafhj");
+			loginWindow.setVisible(true);
+			break;
+			
+		case "contactUs":
+			try {
+				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/hanhanhan0831/Movie-Center"));
+			} catch (IOException | URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			break;
+		}
 	}
 
 
