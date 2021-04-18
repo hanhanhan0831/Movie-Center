@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Vector;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -37,7 +36,9 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-public class GUIVersion2 extends JFrame implements ActionListener{
+
+@SuppressWarnings("serial")
+public class GUIVersion2 extends JFrame implements ActionListener {
 	// ======================= Parameters
 	static JPanel panel = new JPanel();
 	static JMenuBar menuBar = new JMenuBar();
@@ -46,7 +47,8 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 	static Account User = null;
 	static JList<Movie> movieList;
 	static JScrollPane movieScrollPane;
-	static DefaultListModel<Movie> model = new DefaultListModel<>();
+	static DefaultListModel<Movie> modelMovie = new DefaultListModel<>();
+	static DefaultListModel<Comment> modelComment = new DefaultListModel<>();
 
 	// ======================= Constructors
 	public GUIVersion2() {
@@ -76,13 +78,9 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 		//------- Display all movies to start
 		
 		ArrayList<Movie> allMovies = MovieData.getAllMovies();
-		Movie[] arr = new Movie[allMovies.size()];
-		for(int i=0;i<arr.length;i++) {
-			arr[i] = allMovies.get(i);
-		}
-		movieList = new JList<Movie>(model);
-		for(Movie m : arr) {
-			model.addElement(m);
+		movieList = new JList<Movie>(modelMovie);
+		for(Movie m : allMovies) {
+			modelMovie.addElement(m);
 		}
 		movieScrollPane = new JScrollPane(movieList);
 		movieScrollPane.setVisible(true);
@@ -101,8 +99,8 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 		JLabel textLabel = new JLabel("Search Term:");
 		JButton apply = new JButton("Apply Filter");
 		JTextArea directions = new JTextArea();
-		directions.append("To filter by runtime\nand year. ");
-		directions.append("Enter\ntwo comma\nseperated numbers,\n");
+		directions.append("To filter by runtime\nand year, ");
+		directions.append("enter\ntwo comma\nseperated numbers,\n");
 		directions.append("Maximum and then\nminimum");
 		directions.setEditable(false);
 		apply.addActionListener(new ActionListener() {
@@ -131,13 +129,9 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 					break;
 				}
 				
-				Movie[] array = new Movie[results.size()];
-				for(int i=0;i<array.length;i++) {
-					array[i] = results.get(i);
-				}
-				model.removeAllElements();
-				for(Movie m : array) {
-					model.addElement(m);
+				modelMovie.removeAllElements();
+				for(Movie m : results) {
+					modelMovie.addElement(m);
 				}
 			}
 		});
@@ -203,6 +197,7 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 //				}
 //			}
 //		});
+
 	}
 
 
@@ -248,7 +243,7 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 				//Will check fields were filled
 				String username = unField.getText();
 				String password = String.valueOf(pwField.getPassword());
-				//V. 1 of login system
+				//Will then call The UserData class once implemented
 				UserType type = UserData.login(username, password);
 				if(type == null) {
 					//login fails
@@ -284,7 +279,6 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 				}catch(InputMismatchException error) {
 					//Handle account failing to be added
 					JOptionPane.showMessageDialog(null, "Unable to create user.\nPlease use File -> Login to create a new account\nor try logging in again.");
-
 				}
 				GUIVersion2.User = new Account(UserType.USER, username);
 				loginWindow.dispose();
@@ -306,18 +300,85 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 	private static void openMoviePage(Movie m) {
 		//Create a new JFrame that displays the page for a single movie
 		JFrame movieWindow = new JFrame(m.getName());
+		movieWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JLabel movieTitle = new JLabel("Movie Title: " + m.getName());
 		JLabel movieDirector = new JLabel("Directed By: " + m.getDirector());
 		JLabel movieGenre = new JLabel("Genre: " + m.getGenre());
 		JLabel movieRun = new JLabel("Runtime: "+m.getRuntime());
 		JLabel movieRelease = new JLabel("Released in: "+m.getYearReleased());
 		movieWindow.setSize(500,500);
-		movieWindow.setLayout(new GridLayout(0,1));
-		movieWindow.add(movieTitle);
-		movieWindow.add(movieDirector);
-		movieWindow.add(movieGenre);
-		movieWindow.add(movieRun);
-		movieWindow.add(movieRelease);
+		movieWindow.setLayout(new GridLayout(0,2));
+		JPanel movieInfo = new JPanel(new GridLayout(0,1));
+		movieInfo.add(movieTitle);
+		movieInfo.add(movieDirector);
+		movieInfo.add(movieGenre);
+		movieInfo.add(movieRun);
+		movieInfo.add(movieRelease);
+		
+		movieWindow.add(movieInfo);
+		
+		JPanel commentPanel = new JPanel(new GridLayout(0,1));
+		ArrayList<Comment> comments = CommentData.getCommentsByMovie(m);
+		JList<Comment> commentList = new JList<>(modelComment);
+		for(Comment c : comments) {
+			modelComment.addElement(c);
+		}
+		JScrollPane commentPane = new JScrollPane(commentList);
+		commentPane.setVisible(true);
+		commentPanel.add(commentPane);
+		JButton selectComment = new JButton("Read Comment");
+		JButton addComment = new JButton("Add Comment");
+		JTextArea commentDisplay = new JTextArea("");
+		commentDisplay.setEditable(false);
+		selectComment.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Comment c = commentList.getSelectedValue();
+				commentDisplay.setText(c.getText());
+			}
+		});
+		addComment.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(User==null) {
+					commentDisplay.setText("Cannot add comment, login and try again");
+				}else {
+					JFrame getCommentFromUser = new JFrame("Create Comment");
+					getCommentFromUser.setSize(300,200);
+					JPanel addCommentPanel = new JPanel();
+					JTextArea commentReader = new JTextArea("Type comment text here");
+					JTextField ratingReader = new JTextField("Give a number between 0 to 10");
+					JButton submitComment = new JButton("Submit Comment");
+					addCommentPanel.add(commentReader);
+					addCommentPanel.add(ratingReader);
+					addCommentPanel.add(submitComment);
+					getCommentFromUser.add(addCommentPanel);
+					getCommentFromUser.setVisible(true);
+					submitComment.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							try {
+								Comment c = new Comment(m, User.getUsername(), commentReader.getText(), Double.parseDouble(ratingReader.getText()));
+								CommentData.addComment(c);
+								getCommentFromUser.dispose();
+							}catch(NumberFormatException error) {
+								ratingReader.setText("Invalid rating format");
+							}
+						}
+					});
+				}
+			}
+		});
+		commentPanel.add(selectComment);
+		commentPanel.add(addComment);
+		commentPanel.add(commentDisplay);
+		
+		movieWindow.add(commentPanel);
+		
+		
+		
+		
+		
 		movieWindow.setVisible(true);
 	}
 	
@@ -331,6 +392,7 @@ public class GUIVersion2 extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		String cmd = e.getActionCommand();
 		switch (cmd) {
 		case "login":
