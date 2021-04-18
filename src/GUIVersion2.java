@@ -328,7 +328,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		commentPanel.add(commentPane);
 		JButton selectComment = new JButton("Read Comment");
 		JButton addComment = new JButton("Add Comment");
-		JTextArea commentDisplay = new JTextArea("");
+		JTextArea commentDisplay = new JTextArea("**Added comments will not appear unless page is refreshed**");
 		commentDisplay.setEditable(false);
 		selectComment.addActionListener(new ActionListener(){
 			@Override
