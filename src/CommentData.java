@@ -21,7 +21,7 @@ public class CommentData {
 		}
 	}
 	
-	protected ArrayList<Comment> getCommentsByMovie(Movie m){
+	protected static ArrayList<Comment> getCommentsByMovie(Movie m){
 		ArrayList<Comment> results = new ArrayList<>();
 		try {
 			Scanner reader = new Scanner(data);
@@ -39,7 +39,7 @@ public class CommentData {
 		return results;
 	}
 	
-	protected ArrayList<Comment> getCommentsByUser(String user){
+	protected static ArrayList<Comment> getCommentsByUser(String user){
 		ArrayList<Comment> results = new ArrayList<>();
 		try {
 			Scanner reader = new Scanner(data);
