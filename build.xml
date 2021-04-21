@@ -92,26 +92,15 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="commentData">
-        <java classname="CommentData" failonerror="true" fork="yes">
-            <classpath refid="run.commentData.classpath"/>
-        </java>
-    </target>
+
+              	
     <target name="GUIVersion2">
         <java classname="GUIVersion2" failonerror="true" fork="yes">
             <classpath refid="run.GUIVersion2.classpath"/>
         </java>
     </target>
-    <target name="Movie">
-        <java classname="Movie" failonerror="true" fork="yes">
-            <classpath refid="run.Movie.classpath"/>
-        </java>
-    </target>
-    <target name="MovieData">
-        <java classname="MovieData" failonerror="true" fork="yes">
-            <classpath refid="run.MovieData.classpath"/>
-        </java>
-    </target>
+
+
     <target name="MovieDataTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
@@ -121,11 +110,9 @@
             <classpath refid="run.MovieDataTest.classpath"/>
         </junit>
     </target>
-    <target name="UserData">
-        <java classname="UserData" failonerror="true" fork="yes">
-            <classpath refid="run.UserData.classpath"/>
-        </java>
-    </target>
+
+              	
+              	
     <target name="UserDataTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
