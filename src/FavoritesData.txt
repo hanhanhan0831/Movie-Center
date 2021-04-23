@@ -1,2 +1,0 @@
-anotherUser,movieTitle
-anotherUser,movie
