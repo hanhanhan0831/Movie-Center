@@ -70,6 +70,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	}
 
 	public static void buildPanel() {
+		panel.setLayout(new BorderLayout());
 		TitledBorder border = new TitledBorder("Welcome to Movie Center");
 	    border.setTitleJustification(TitledBorder.CENTER);
 	    border.setTitlePosition(TitledBorder.TOP);
@@ -95,6 +96,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		filters.setPreferredSize(new Dimension(100,50));
 		JPanel filterPanel = new JPanel();
 		filterPanel.setPreferredSize(new Dimension(125, 275));
+//		filterPanel.setLayout(new BorderLayout());
 		JTextField filterText = new JTextField(10);
 		JLabel textLabel = new JLabel("Search Term:");
 		JButton apply = new JButton("Apply Filter");
@@ -136,11 +138,11 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			}
 		});
 		filterPanel.add(filterLabel, BorderLayout.NORTH);
-		filterPanel.add(filters, BorderLayout.CENTER);
-		filterPanel.add(textLabel, BorderLayout.SOUTH);
-		filterPanel.add(filterText, BorderLayout.SOUTH);
-		filterPanel.add(apply);
-		filterPanel.add(directions);
+		filterPanel.add(filters, BorderLayout.NORTH);
+		filterPanel.add(textLabel, BorderLayout.NORTH);
+		filterPanel.add(filterText, BorderLayout.NORTH);
+		filterPanel.add(apply, BorderLayout.NORTH);
+		filterPanel.add(directions, BorderLayout.AFTER_LAST_LINE);
 		panel.add(filterPanel, BorderLayout.EAST);
 		
 		
@@ -152,7 +154,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				openMoviePage(movieList.getSelectedValue());
 			}
 		});
-		panel.add(selectMovie, BorderLayout.WEST);
+		panel.add(selectMovie, BorderLayout.SOUTH);
 
 	}
 
