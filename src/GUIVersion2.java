@@ -375,6 +375,19 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		commentPanel.add(commentDisplay);
 		commentPanel.add(addComment);
 		
+		//This is the favorite button Section
+		JButton favoriteButton = new JButton("Favorite Movie");
+		favoriteButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(User != null) {
+					FavoritesData.addFavorite(User, m);
+				}else {
+					JOptionPane.showMessageDialog(null, "Cannot add favorite, not logged in");
+				}
+			}
+		});
+		
 		movieWindow.add(commentPanel, BorderLayout.SOUTH);
 		
 		
