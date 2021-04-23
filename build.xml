@@ -33,6 +33,10 @@
         <path refid="Movie-Center.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
     </path>
+    <path id="run.FavoritesData.classpath">
+        <path refid="Movie-Center.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
     <path id="run.GUIVersion2.classpath">
         <path refid="Movie-Center.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
@@ -46,6 +50,10 @@
         <path refid="JUnit 5.libraryclasspath"/>
     </path>
     <path id="run.MovieDataTest.classpath">
+        <path refid="Movie-Center.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.FavoritesDataTest.classpath">
         <path refid="Movie-Center.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
     </path>
