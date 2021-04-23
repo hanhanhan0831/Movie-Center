@@ -309,7 +309,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		JLabel movieRun = new JLabel("Runtime: "+m.getRuntime());
 		JLabel movieRelease = new JLabel("Released in: "+m.getYearReleased());
 		movieWindow.setSize(500,500);
-		movieWindow.setLayout(new GridLayout(0,2));
+		movieWindow.setLayout(new BorderLayout());
 		JPanel movieInfo = new JPanel(new GridLayout(0,1));
 		movieInfo.add(movieTitle);
 		movieInfo.add(movieDirector);
@@ -317,9 +317,9 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		movieInfo.add(movieRun);
 		movieInfo.add(movieRelease);
 		
-		movieWindow.add(movieInfo);
+		movieWindow.add(movieInfo, BorderLayout.WEST);
 		
-		JPanel commentPanel = new JPanel(new GridLayout(0,1));
+		JPanel commentPanel = new JPanel(new GridLayout(2,2));
 		ArrayList<Comment> comments = CommentData.getCommentsByMovie(m);
 		JList<Comment> commentList = new JList<>(modelComment);
 		for(Comment c : comments) {
@@ -346,7 +346,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 					commentDisplay.setText("Cannot add comment, login and try again");
 				}else {
 					JFrame getCommentFromUser = new JFrame("Create Comment");
-					getCommentFromUser.setSize(300,200);
+					getCommentFromUser.setSize(150,100);
 					JPanel addCommentPanel = new JPanel();
 					JTextArea commentReader = new JTextArea("Type comment text here");
 					JTextField ratingReader = new JTextField("Give a number between 0 to 10");
@@ -372,10 +372,10 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			}
 		});
 		commentPanel.add(selectComment);
-		commentPanel.add(addComment);
 		commentPanel.add(commentDisplay);
+		commentPanel.add(addComment);
 		
-		movieWindow.add(commentPanel);
+		movieWindow.add(commentPanel, BorderLayout.SOUTH);
 		
 		
 		
