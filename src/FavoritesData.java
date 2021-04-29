@@ -66,6 +66,15 @@ public class FavoritesData {
 		
 	}
 	
+	public static boolean favorited(Account a, Movie m) {
+		for(Movie movie : getUserFavorites(a)) {
+			if(movie.equals(m)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	public static void main(String[] args) {
 		
