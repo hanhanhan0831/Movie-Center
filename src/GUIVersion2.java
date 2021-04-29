@@ -146,6 +146,8 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		panel.add(filterPanel, BorderLayout.EAST);
 		
 		
+		JPanel buttonPanel = new JPanel();
+		
 		//------ Visit movie page
 		JButton selectMovie = new JButton("View movie details");
 		selectMovie.addActionListener(new ActionListener(){
@@ -154,7 +156,21 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				openMoviePage(movieList.getSelectedValue());
 			}
 		});
-		panel.add(selectMovie, BorderLayout.SOUTH);
+		buttonPanel.add(selectMovie);
+		
+		
+		//------ Visit Add Movie Page
+		JButton addMovie = new JButton("Add Movie");
+		addMovie.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openAddMoviePage();
+			}
+		});
+		buttonPanel.add(addMovie);
+		
+		
+		panel.add(buttonPanel, BorderLayout.SOUTH);
 
 	}
 
@@ -299,6 +315,63 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		loginWindow.setVisible(true);
 	}
 	
+	private static void openAddMoviePage() {
+		if(User==null) {
+			return;
+		}
+		JFrame addWindow = new JFrame("Add Movie");
+		if(User.getType().equals(UserType.USER)) {
+			addWindow.setSize(500,200);
+			addWindow.setLayout(new GridLayout(0,1));
+			JPanel userAddPanel = new JPanel();
+			userAddPanel.setVisible(true);
+			userAddPanel.setLayout(new GridLayout(0,2));
+			JLabel nameLabel = new JLabel("Movie Name: ");
+			JTextField movieName = new JTextField(30);
+			userAddPanel.add(nameLabel);
+			userAddPanel.add(movieName);
+			JLabel genreLabel = new JLabel("Movie Genre: ");
+			JTextField movieGenre = new JTextField(30);
+			userAddPanel.add(genreLabel);
+			userAddPanel.add(movieGenre);
+			JLabel directorLabel = new JLabel("Movie Director: ");
+			JTextField movieDirector = new JTextField(30);
+			userAddPanel.add(directorLabel);
+			userAddPanel.add(movieDirector);
+			JLabel runtimeLabel = new JLabel("Movie Runtime: ");
+			JTextField movieRuntime = new JTextField(30);
+			userAddPanel.add(runtimeLabel);
+			userAddPanel.add(movieRuntime);
+			JLabel yearLabel = new JLabel("Movie Year: ");
+			JTextField movieYear = new JTextField(30);
+			userAddPanel.add(yearLabel);
+			userAddPanel.add(movieYear);
+			
+			addWindow.add(userAddPanel);
+			
+			JButton submitMovie = new JButton("Submit for approval");
+			submitMovie.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Movie m = new Movie(movieName.getText(), movieGenre.getText(), movieDirector.getText(), Double.parseDouble(movieRuntime.getText()), Integer.parseInt(movieYear.getText()));
+					addHandler.addPending(m);
+				}
+			});
+			
+			addWindow.add(submitMovie);
+			
+			addWindow.setVisible(true);
+		}else {
+			
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
 	private static void openMoviePage(Movie m) {
 		//Create a new JFrame that displays the page for a single movie
 		JFrame movieWindow = new JFrame(m.getName());
@@ -414,23 +487,11 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			}
 		}
 		
-		
-
-		
-		
-		
-		
+	
 		
 		movieWindow.setVisible(true);
 	}
 	
-	private static void openFavoritesPage() {
-		//Create a new JFrame that displays the active user's favorite movies
-	}
-	
-	private static void openRatingsPage() {
-		//Create a new JFrame that displays the active user's ratings on movies
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
