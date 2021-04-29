@@ -5,8 +5,11 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,8 +18,11 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -179,8 +185,29 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		JMenu file = new JMenu("File");
 		JMenu help = new JMenu("Help");
 		JMenuItem login = new JMenuItem("Login");
+		login.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				loginWindow.setVisible(true);
+			}
+		});
 		JMenuItem howTo = new JMenuItem("How To...");
 		JMenuItem contactMe = new JMenuItem("Contact Us");
+		contactMe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					java.awt.Desktop.getDesktop().browse(new URI("https://github.com/hanhanhan0831/Movie-Center"));
+				} catch (IOException | URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		help.add(howTo);
 		help.add(contactMe);
 		file.add(login);
@@ -440,7 +467,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		JLabel movieRun = new JLabel("Runtime: "+m.getRuntime());
 		JLabel movieRelease = new JLabel("Released in: "+m.getYearReleased());
 		movieWindow.setSize(500,500);
-		movieWindow.setLayout(new GridLayout(0,2));
+		movieWindow.setLayout(new BorderLayout());
 		JPanel movieInfo = new JPanel(new GridLayout(0,1));
 		movieInfo.add(movieTitle);
 		movieInfo.add(movieDirector);
@@ -448,7 +475,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		movieInfo.add(movieRun);
 		movieInfo.add(movieRelease);
 		
-		movieWindow.add(movieInfo);
+		movieWindow.add(movieInfo, BorderLayout.NORTH);
 		
 		JPanel commentPanel = new JPanel(new GridLayout(0,1));
 		ArrayList<Comment> comments = CommentData.getCommentsByMovie(m);
@@ -508,12 +535,32 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				}
 			}
 		});
-		commentPanel.add(selectComment);
-		commentPanel.add(addComment);
+//		commentPanel.add(selectComment);
+//		commentPanel.add(addComment);
 		commentPanel.add(commentDisplay);
 		
+		JPanel actionPanel = new JPanel(new GridLayout(1, 0));
 		
-		movieWindow.add(commentPanel);
+		actionPanel.add(addComment);
+		actionPanel.add(selectComment);
+		
+		
+		JLabel poster = new JLabel();
+		movieWindow.add(poster, BorderLayout.WEST);
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(new File("moviePosters/samplePoster.jpg"));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(200, 300,
+		        Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		poster.setIcon(imageIcon);
+//		movieWindow.add(new JLabel(new ImageIcon("moviePosters/samplePoster.jpg").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)).getIcon(), BorderLayout.WEST);
+		
+		movieWindow.add(commentPanel, BorderLayout.EAST);
+		movieWindow.add(actionPanel, BorderLayout.SOUTH);
 		
 		//This is the favorite button Section
 		JButton favoriteButton = new JButton("Favorite Movie");
@@ -540,9 +587,11 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		});
 		if(User != null) {
 			if(FavoritesData.favorited(User, m)) {
-				movieInfo.add(removeFavorite);
+//				movieInfo.add(removeFavorite);
+				actionPanel.add(removeFavorite);
 			}else {
-				movieInfo.add(favoriteButton);
+//				movieInfo.add(favoriteButton);
+				actionPanel.add(favoriteButton);
 			}
 		}
 		
@@ -555,22 +604,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		String cmd = e.getActionCommand();
-		switch (cmd) {
-		case "login":
-			System.out.println("jauiosafhj");
-			loginWindow.setVisible(true);
-			break;
-			
-		case "contactUs":
-			try {
-				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/hanhanhan0831/Movie-Center"));
-			} catch (IOException | URISyntaxException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			break;
-		}
+		
 	}
 
 
