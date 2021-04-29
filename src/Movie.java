@@ -69,6 +69,6 @@ public class Movie {
 		}
 		
 		public boolean equals(Movie m) {
-			return this.forFile().equals(m.forFile());
+			return this.getName().equals(m.getName()) && this.getDirector().equals(m.getDirector());
 		}
 }
