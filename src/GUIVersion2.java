@@ -362,7 +362,66 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			
 			addWindow.setVisible(true);
 		}else {
+			addWindow.setSize(500,500);
+			addWindow.setLayout(new GridLayout(0,2));
 			
+			JPanel pendingPanel = new JPanel();
+			ArrayList<Movie> pending = addHandler.getPending();
+			DefaultListModel<Movie> pendingModel = new DefaultListModel<>();
+			JList<Movie> pendingList = new JList<>(pendingModel);
+			pendingModel.clear();
+			for(Movie m : pending) {
+				pendingModel.addElement(m);
+			}
+			JScrollPane pendingPane = new JScrollPane(pendingList);
+			pendingPane.setSize(200, 200);
+			pendingPane.setVisible(true);
+			pendingPanel.add(pendingPane);
+			addWindow.add(pendingPanel);
+			
+			
+			JPanel buttons = new JPanel();
+			buttons.setLayout(new GridLayout(0,1));
+			JButton checkMovie = new JButton("Review Submission");
+			checkMovie.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Movie movie = pendingList.getSelectedValue();
+					JFrame reviewWindow = new JFrame("review movie info");
+					reviewWindow.setSize(300,200);
+					reviewWindow.setLayout(new GridLayout(0,1));
+					JLabel name = new JLabel("Name:"+movie.getName());
+					JLabel director = new JLabel("Director:"+movie.getDirector());
+					JLabel genre = new JLabel("Genre:"+movie.getGenre());
+					JLabel runtime = new JLabel("Runtime"+movie.getRuntime());
+					JLabel year = new JLabel("Year:"+movie.getYearReleased());
+					reviewWindow.add(name);
+					reviewWindow.add(director);
+					reviewWindow.add(genre);
+					reviewWindow.add(runtime);
+					reviewWindow.add(year);
+					
+					reviewWindow.setVisible(true);
+				}
+			});
+			
+			JButton addMovie = new JButton("Accept Submission");
+			addMovie.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					Movie movie = pendingList.getSelectedValue();
+					MovieData.storeMovie(movie);
+				}
+			});
+			
+			buttons.add(checkMovie);
+			buttons.add(addMovie);
+			
+			
+			addWindow.add(buttons);
+			
+			
+			addWindow.setVisible(true);
 		}
 		
 		
