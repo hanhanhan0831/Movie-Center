@@ -302,14 +302,13 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	private static void openMoviePage(Movie m) {
 		//Create a new JFrame that displays the page for a single movie
 		JFrame movieWindow = new JFrame(m.getName());
-		movieWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JLabel movieTitle = new JLabel("Movie Title: " + m.getName());
 		JLabel movieDirector = new JLabel("Directed By: " + m.getDirector());
 		JLabel movieGenre = new JLabel("Genre: " + m.getGenre());
 		JLabel movieRun = new JLabel("Runtime: "+m.getRuntime());
 		JLabel movieRelease = new JLabel("Released in: "+m.getYearReleased());
 		movieWindow.setSize(500,500);
-		movieWindow.setLayout(new BorderLayout());
+		movieWindow.setLayout(new GridLayout(0,2));
 		JPanel movieInfo = new JPanel(new GridLayout(0,1));
 		movieInfo.add(movieTitle);
 		movieInfo.add(movieDirector);
@@ -317,11 +316,12 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		movieInfo.add(movieRun);
 		movieInfo.add(movieRelease);
 		
-		movieWindow.add(movieInfo, BorderLayout.WEST);
+		movieWindow.add(movieInfo);
 		
-		JPanel commentPanel = new JPanel(new GridLayout(2,2));
+		JPanel commentPanel = new JPanel(new GridLayout(0,1));
 		ArrayList<Comment> comments = CommentData.getCommentsByMovie(m);
 		JList<Comment> commentList = new JList<>(modelComment);
+		modelComment.clear();
 		for(Comment c : comments) {
 			modelComment.addElement(c);
 		}
@@ -331,6 +331,8 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		JButton selectComment = new JButton("Read Comment");
 		JButton addComment = new JButton("Add Comment");
 		JTextArea commentDisplay = new JTextArea("**Added comments will not appear unless page is refreshed**");
+		commentDisplay.setLineWrap(true);
+		commentDisplay.setWrapStyleWord(true);
 		commentDisplay.setEditable(false);
 		selectComment.addActionListener(new ActionListener(){
 			@Override
@@ -346,9 +348,12 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 					commentDisplay.setText("Cannot add comment, login and try again");
 				}else {
 					JFrame getCommentFromUser = new JFrame("Create Comment");
-					getCommentFromUser.setSize(150,100);
+					getCommentFromUser.setSize(new Dimension(400, 400));
 					JPanel addCommentPanel = new JPanel();
 					JTextArea commentReader = new JTextArea("Type comment text here");
+					commentReader.setPreferredSize(new Dimension(200, 50));
+					commentReader.setLineWrap(true);
+					commentReader.setWrapStyleWord(true);
 					JTextField ratingReader = new JTextField("Give a number between 0 to 10");
 					JButton submitComment = new JButton("Submit Comment");
 					addCommentPanel.add(commentReader);
@@ -372,8 +377,11 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			}
 		});
 		commentPanel.add(selectComment);
-		commentPanel.add(commentDisplay);
 		commentPanel.add(addComment);
+		commentPanel.add(commentDisplay);
+		
+		
+		movieWindow.add(commentPanel);
 		
 		//This is the favorite button Section
 		JButton favoriteButton = new JButton("Favorite Movie");
@@ -387,8 +395,27 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				}
 			}
 		});
+		JButton removeFavorite = new JButton("Unfavorite Movie");
+		removeFavorite.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(User != null) {
+					FavoritesData.removeFavorite(User, m);
+				}else {
+					JOptionPane.showMessageDialog(null, "Cannot add favorite, not logged in");
+				}
+			}
+		});
+		if(User != null) {
+			if(FavoritesData.favorited(User, m)) {
+				movieInfo.add(removeFavorite);
+			}else {
+				movieInfo.add(favoriteButton);
+			}
+		}
 		
-		movieWindow.add(commentPanel, BorderLayout.SOUTH);
+		
+
 		
 		
 		
