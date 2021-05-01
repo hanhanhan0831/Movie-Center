@@ -175,10 +175,51 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		});
 		buttonPanel.add(addMovie);
 		
+		//------ View favorites
+		JButton viewFavorites = new JButton("View Favorites");
+		viewFavorites.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openViewFavorites(User);
+			}
+		});
+		buttonPanel.add(viewFavorites);
 		
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 
 	}
+	
+	
+	public static void openViewFavorites(Account a) {
+		JFrame faveFrame = new JFrame("Favorites Window");
+		faveFrame.setSize(150, 200);
+		JPanel favePanel = new JPanel();
+		favePanel.setLayout(new BorderLayout());
+		ArrayList<Movie> faves = FavoritesData.getUserFavorites(a);
+		DefaultListModel<Movie> faveModel = new DefaultListModel<>();
+		JList<Movie> faveList = new JList<>(faveModel);
+		for(Movie m:faves) {
+			faveModel.addElement(m);
+		}
+		JScrollPane favePane = new JScrollPane(faveList);
+		favePane.setVisible(true);
+		favePanel.add(favePane, BorderLayout.CENTER);
+		favePanel.setVisible(true);
+		
+		JButton viewButton = new JButton("View Movie Details");
+		viewButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openMoviePage(faveList.getSelectedValue());
+			}
+		});
+		favePanel.add(viewButton, BorderLayout.SOUTH);
+		
+		faveFrame.add(favePanel);
+		faveFrame.setVisible(true);
+	}
+	
+	
 
 	public static void buildMenuBar() {
 		// =================== Objects
@@ -609,4 +650,3 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 
 
 }
-
