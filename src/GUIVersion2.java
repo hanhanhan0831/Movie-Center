@@ -180,7 +180,12 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		viewFavorites.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				openViewFavorites(User);
+				if(User != null) {
+					openViewFavorites(User);
+				}else {
+					JOptionPane.showMessageDialog(null,"Must log in to view favorites.");
+				}
+
 			}
 		});
 		buttonPanel.add(viewFavorites);
