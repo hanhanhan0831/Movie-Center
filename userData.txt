@@ -1,2 +1,5 @@
 username,USER,password
 najchris11,ADMIN,password
+anotherUser,USER,password
+anAdmin,ADMIN,password
+aMod,MODERATOR,password

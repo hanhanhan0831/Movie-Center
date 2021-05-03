@@ -29,11 +29,27 @@
         <pathelement location="bin"/>
         <path refid="JUnit 5.libraryclasspath"/>
     </path>
+    <path id="run.addHandler.classpath">
+        <path refid="Movie-Center.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
     <path id="run.commentData.classpath">
         <path refid="Movie-Center.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
     </path>
     <path id="run.FavoritesData.classpath">
+        <path refid="Movie-Center.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.FavoritesDataTest.classpath">
+        <path refid="Movie-Center.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.FavoritesDataTest.testRemoveFavorite.classpath">
+        <path refid="Movie-Center.classpath"/>
+        <path refid="JUnit 5.libraryclasspath"/>
+    </path>
+    <path id="run.GUI.classpath">
         <path refid="Movie-Center.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
     </path>
@@ -53,10 +69,6 @@
         <path refid="Movie-Center.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
     </path>
-    <path id="run.FavoritesDataTest.classpath">
-        <path refid="Movie-Center.classpath"/>
-        <path refid="JUnit 5.libraryclasspath"/>
-    </path>
     <path id="run.UserData.classpath">
         <path refid="Movie-Center.classpath"/>
         <path refid="JUnit 5.libraryclasspath"/>
@@ -69,6 +81,7 @@
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
+                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -100,15 +113,54 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-
-              	
+    <target name="addHandler">
+        <java classname="addHandler" failonerror="true" fork="yes">
+            <classpath refid="run.addHandler.classpath"/>
+        </java>
+    </target>
+    <target name="commentData">
+        <java classname="CommentData" failonerror="true" fork="yes">
+            <classpath refid="run.commentData.classpath"/>
+        </java>
+    </target>
+    <target name="FavoritesData">
+        <java classname="FavoritesData" failonerror="true" fork="yes">
+            <classpath refid="run.FavoritesData.classpath"/>
+        </java>
+    </target>
+    <target name="FavoritesDataTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="FavoritesDataTest" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="run.FavoritesDataTest.classpath"/>
+        </junit>
+    </target>
+    <target name="FavoritesDataTest.testRemoveFavorite">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="FavoritesDataTest" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="run.FavoritesDataTest.testRemoveFavorite.classpath"/>
+        </junit>
+    </target>
     <target name="GUIVersion2">
         <java classname="GUIVersion2" failonerror="true" fork="yes">
             <classpath refid="run.GUIVersion2.classpath"/>
         </java>
     </target>
-
-
+    <target name="Movie">
+        <java classname="Movie" failonerror="true" fork="yes">
+            <classpath refid="run.Movie.classpath"/>
+        </java>
+    </target>
+    <target name="MovieData">
+        <java classname="MovieData" failonerror="true" fork="yes">
+            <classpath refid="run.MovieData.classpath"/>
+        </java>
+    </target>
     <target name="MovieDataTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
@@ -118,9 +170,11 @@
             <classpath refid="run.MovieDataTest.classpath"/>
         </junit>
     </target>
-
-              	
-              	
+    <target name="UserData">
+        <java classname="UserData" failonerror="true" fork="yes">
+            <classpath refid="run.UserData.classpath"/>
+        </java>
+    </target>
     <target name="UserDataTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
