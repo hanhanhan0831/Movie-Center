@@ -375,7 +375,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		}
 		JFrame addWindow = new JFrame("Add Movie");
 		if(User.getType().equals(UserType.USER)) {
-			addWindow.setSize(500,200);
+			addWindow.setSize(500,300);
 			addWindow.setLayout(new GridLayout(0,1));
 			JPanel userAddPanel = new JPanel();
 			userAddPanel.setVisible(true);
@@ -413,6 +413,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				public void actionPerformed(ActionEvent e) {
 					Movie m = new Movie(movieName.getText(), movieGenre.getText(), movieDirector.getText(), Double.parseDouble(movieRuntime.getText()), Integer.parseInt(movieYear.getText()));
 					addHandler.addPending(m, posterUrl.getText());
+					addWindow.dispose();
 				}
 			});
 			
