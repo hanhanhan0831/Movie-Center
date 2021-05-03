@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -12,9 +13,9 @@ public class Poster {
 	String url;
 	ImageIcon poster;
 	
-	public Poster(Movie movie, String posterUrl) {
+	public Poster(Movie movie) {
 		setM(movie);
-		setUrl(posterUrl);
+		setUrl("moviePosters/"+movie.getName()+".jpg");
 		processImage();
 	}
 
@@ -22,7 +23,7 @@ public class Poster {
 	public void processImage() {
 		BufferedImage img = null;
 		try {
-		    img = ImageIO.read(new URL(url));
+		    img = ImageIO.read(new File(url));
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}

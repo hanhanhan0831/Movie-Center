@@ -10,9 +10,10 @@ import java.util.Scanner;
 public class addHandler {
 	private static File data = new File("PendingMovies.txt");
 	
-	protected static void addPending(Movie m) {
+	protected static void addPending(Movie m, String url) {
 		try {
 			FileWriter writer = new FileWriter(data, true);
+			writer.write(url+",");
 			writer.write(m.forFile());
 			writer.close();
 		}catch(IOException e) {
@@ -27,7 +28,7 @@ public class addHandler {
 			while(reader.hasNextLine()) {
 				String line = reader.nextLine();
 				String[] pieces = line.split(",");
-				Movie m = new Movie(pieces[0], pieces[2], pieces[1], Double.parseDouble(pieces[3]), Integer.parseInt(pieces[4]));
+				Movie m = new Movie(pieces[1], pieces[3], pieces[2], Double.parseDouble(pieces[4]), Integer.parseInt(pieces[5]));
 				mList.add(m);
 			}
 			reader.close();
@@ -35,6 +36,25 @@ public class addHandler {
 			e.printStackTrace();
 		}
 		return mList;
+	}
+	
+	protected static String getUrl(Movie m) {
+		String s = null;
+		try {
+			Scanner reader = new Scanner(data);
+			while(reader.hasNextLine()) {
+				String line = reader.nextLine();
+				String pieces[] = line.split(",");
+				if(pieces[1].equals(m.getName())) {
+					reader.close();
+					return pieces[0];
+				}
+			}
+			reader.close();	
+		}catch(FileNotFoundException e){
+			e.printStackTrace();
+		}
+		return s;
 	}
 	
 	protected static void removePending(Movie m) {

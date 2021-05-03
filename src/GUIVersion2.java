@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -8,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -370,7 +374,6 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			return;
 		}
 		JFrame addWindow = new JFrame("Add Movie");
-		PosterData posters = new PosterData();
 		if(User.getType().equals(UserType.USER)) {
 			addWindow.setSize(500,200);
 			addWindow.setLayout(new GridLayout(0,1));
@@ -409,7 +412,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Movie m = new Movie(movieName.getText(), movieGenre.getText(), movieDirector.getText(), Double.parseDouble(movieRuntime.getText()), Integer.parseInt(movieYear.getText()));
-					addHandler.addPending(m);
+					addHandler.addPending(m, posterUrl.getText());
 				}
 			});
 			
@@ -448,14 +451,39 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 					JLabel name = new JLabel("Name:"+movie.getName());
 					JLabel director = new JLabel("Director:"+movie.getDirector());
 					JLabel genre = new JLabel("Genre:"+movie.getGenre());
-					JLabel runtime = new JLabel("Runtime"+movie.getRuntime());
+					JLabel runtime = new JLabel("Runtime:"+movie.getRuntime());
 					JLabel year = new JLabel("Year:"+movie.getYearReleased());
+					JLabel url = new JLabel("Poster");
+					url.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+					url.addMouseListener(new MouseAdapter() {
+						 
+					    @Override
+					    public void mouseClicked(MouseEvent e) {
+					        try {
+					            
+					            Desktop.getDesktop().browse(new URI(addHandler.getUrl(movie)));
+					             
+					        } catch (IOException | URISyntaxException e1) {
+					            e1.printStackTrace();
+					        }
+					    }
+					    @Override
+					    public void mouseEntered(MouseEvent e) {
+					    }
+					    @Override
+					    public void mouseExited(MouseEvent e) {
+					    }
+					});
+					
+					
+					
+					addHandler.getUrl(movie);
 					reviewWindow.add(name);
 					reviewWindow.add(director);
 					reviewWindow.add(genre);
 					reviewWindow.add(runtime);
 					reviewWindow.add(year);
-					
+					reviewWindow.add(url);
 					reviewWindow.setVisible(true);
 				}
 			});
@@ -470,6 +498,11 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			});
 			
 			buttons.add(checkMovie);
+			JTextArea text = new JTextArea("It is admin responsibility to follow submitted url and add jpg to proper folder");
+			text.setEditable(false);
+			text.setLineWrap(true);
+			buttons.add(text);
+			
 			buttons.add(addMovie);
 			
 			
@@ -487,7 +520,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	
 	
 	private static void openMoviePage(Movie m) {
-		PosterData posters = new PosterData();
+		//PosterData posters = new PosterData();
 		
 		//Create a new JFrame that displays the page for a single movie
 		JFrame movieWindow = new JFrame(m.getName());
@@ -574,8 +607,8 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		actionPanel.add(addComment);
 		actionPanel.add(selectComment);
 		
-		
-		JLabel poster = new JLabel(posters.getPoster(m));
+		Poster curr = new Poster(m);
+		JLabel poster = new JLabel(curr.poster);
 		movieWindow.add(poster, BorderLayout.WEST);
 //		BufferedImage img = null;
 //		try {
