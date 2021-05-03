@@ -1,3 +1,2 @@
 username,USER,password
-,USER,
 najchris11,ADMIN,password

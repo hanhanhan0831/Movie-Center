@@ -65,7 +65,7 @@ public class Movie {
 		
 		@Override
 		public String toString() {
-		return "" + getName() + ", " + getYearReleased();
+		return "" + getName() + ", " + getDirector();
 		}
 		
 		public boolean equals(Movie m) {

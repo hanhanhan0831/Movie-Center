@@ -254,7 +254,12 @@ public class MovieData {
 		}
 	}
 	
-	
+	protected static Movie getMovieByNameAndDirector(String name, String director) {
+		for (Movie m : getAllMovies()) {
+			if (m.getName().equals(name) && m.getDirector().equals(director))
+				return m;
+		} return null;
+	}
 	
 	public static void main(String[] args) {
 		System.out.println(getMovieByTitle("movieTitle").forFile());

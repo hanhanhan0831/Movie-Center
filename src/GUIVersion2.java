@@ -261,33 +261,10 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		menuBar.add(help);
 
 		
-		howTo.setActionCommand("howTo");
-		contactMe.setActionCommand("contactUs");
-		login.setActionCommand("login");
-		
-		//Trying to figure out how to make the action listeners work bc they dont work
-//		menuBar.add(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				String cmd = e.getActionCommand();
-//				switch (cmd) {
-//				case "login":
-//					System.out.println("jauiosafhj");
-//					loginWindow.setVisible(true);
-//					break;
-//					
-//				case "contactUs":
-//					try {
-//						java.awt.Desktop.getDesktop().browse(new URI("https://github.com/hanhanhan0831/Movie-Center"));
-//					} catch (IOException | URISyntaxException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-//					break;
-//				}
-//			}
-//		});
+//		howTo.setActionCommand("howTo");
+//		contactMe.setActionCommand("contactUs");
+//		login.setActionCommand("login");
+//		
 
 	}
 
