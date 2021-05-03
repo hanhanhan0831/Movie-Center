@@ -12,8 +12,10 @@ import javax.swing.ImageIcon;
 public class PosterData {
 
 	ArrayList<Poster> posters = new ArrayList<Poster>();
-	MovieData currentDb;
 	
+	public PosterData() {
+		readData();
+	}
 	private void readData() {
 		Scanner fin = null;
 		try {
@@ -32,7 +34,7 @@ public class PosterData {
 		}
 	}
 	
-	private void writeData() {
+	public void writeData() {
 		PrintWriter fout = null;
 		try {
 			fout = new PrintWriter(new File("posterData.txt"));
@@ -62,4 +64,6 @@ public class PosterData {
 			        Image.SCALE_SMOOTH);
 			return new ImageIcon(dimg);
 	}
+
+	
 }

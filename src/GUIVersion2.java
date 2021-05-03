@@ -370,6 +370,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			return;
 		}
 		JFrame addWindow = new JFrame("Add Movie");
+		PosterData posters = new PosterData();
 		if(User.getType().equals(UserType.USER)) {
 			addWindow.setSize(500,200);
 			addWindow.setLayout(new GridLayout(0,1));
@@ -396,6 +397,10 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 			JTextField movieYear = new JTextField(30);
 			userAddPanel.add(yearLabel);
 			userAddPanel.add(movieYear);
+			JLabel posterLabel = new JLabel("PosterUrl: ");
+			JTextField posterUrl = new JTextField(50);
+			userAddPanel.add(posterLabel);
+			userAddPanel.add(posterUrl);
 			
 			addWindow.add(userAddPanel);
 			
@@ -482,6 +487,8 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	
 	
 	private static void openMoviePage(Movie m) {
+		PosterData posters = new PosterData();
+		
 		//Create a new JFrame that displays the page for a single movie
 		JFrame movieWindow = new JFrame(m.getName());
 		JLabel movieTitle = new JLabel("Movie Title: " + m.getName());
@@ -568,18 +575,18 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 		actionPanel.add(selectComment);
 		
 		
-		JLabel poster = new JLabel();
+		JLabel poster = new JLabel(posters.getPoster(m));
 		movieWindow.add(poster, BorderLayout.WEST);
-		BufferedImage img = null;
-		try {
-		    img = ImageIO.read(new File("moviePosters/samplePoster.jpg"));
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		Image dimg = img.getScaledInstance(200, 300,
-		        Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		poster.setIcon(imageIcon);
+//		BufferedImage img = null;
+//		try {
+//		    img = ImageIO.read(new File("moviePosters/samplePoster.jpg"));
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		}
+//		Image dimg = img.getScaledInstance(200, 300,
+//		        Image.SCALE_SMOOTH);
+//		ImageIcon imageIcon = new ImageIcon(dimg);
+//		poster.setIcon(imageIcon);
 //		movieWindow.add(new JLabel(new ImageIcon("moviePosters/samplePoster.jpg").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)).getIcon(), BorderLayout.WEST);
 		
 		movieWindow.add(commentPanel, BorderLayout.EAST);
