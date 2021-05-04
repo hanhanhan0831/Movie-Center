@@ -28,7 +28,7 @@ class MovieDataTest {
 	@Test
 	void testGetAllMovies() {
 		ArrayList<Movie> m = MovieData.getAllMovies();
-		assertEquals(m.size(), 9);
+		assertEquals(m.size(), 3);
 	}
 
 	@Test
@@ -41,41 +41,41 @@ class MovieDataTest {
 	@Test
 	void testGetMoviesByTitleString() {
 		ArrayList<Movie> m = MovieData.getMoviesByTitle("Movie");
-		assertEquals(m.size(),6);
+		assertEquals(m.size(),1);
 	}
 
 	@Test
 	void testGetMoviesByTitleStringMovieArray() {
 		ArrayList<Movie> m = MovieData.getMoviesByTitle("Movie");
 		ArrayList<Movie> filteredAgain = MovieData.getMoviesByTitle("a", m);
-		assertEquals(filteredAgain.size(),3);
+		assertEquals(filteredAgain.size(),1);
 		
 	}
 
 	@Test
 	void testGetMoviesByDirectorString() {
-		ArrayList<Movie> m = MovieData.getMoviesByDirector("theDirector");
-		assertEquals(m.size(),2);
+		ArrayList<Movie> m = MovieData.getMoviesByDirector("director");
+		assertEquals(m.size(),1);
 	}
 
 	@Test
 	void testGetMoviesByDirectorStringMovieArray() {
 		ArrayList<Movie> m = MovieData.getMoviesByTitle("Movie");
-		ArrayList<Movie> filteredAgain = MovieData.getMoviesByDirector("thisDirector", m);
-		assertEquals(filteredAgain.size(),2);
+		ArrayList<Movie> filteredAgain = MovieData.getMoviesByDirector("anotherDirector", m);
+		assertEquals(filteredAgain.size(),1);
 	}
 
 	@Test
 	void testGetMoviesByGenreString() {
 		ArrayList<Movie> m = MovieData.getMoviesByGenre("genre");
-		assertEquals(m.size(),2);
+		assertEquals(m.size(),1);
 	}
 
 	@Test
 	void testGetMoviesByGenreStringMovieArray() {
 		ArrayList<Movie> m = MovieData.getMoviesByTitle("Movie");
-		ArrayList<Movie> filteredAgain = MovieData.getMoviesByGenre("fakeGenre", m);
-		assertEquals(filteredAgain.size(),2);
+		ArrayList<Movie> filteredAgain = MovieData.getMoviesByGenre("anotherGenre", m);
+		assertEquals(filteredAgain.size(),1);
 	}
 
 	@Test
@@ -88,20 +88,20 @@ class MovieDataTest {
 	void testGetMoviesByRuntimeDoubleDoubleMovieArray() {
 		ArrayList<Movie> m = MovieData.getMoviesByTitle("Movie");
 		ArrayList<Movie> filteredAgain = MovieData.getMoviesByRuntime(1.7,1.4, m);
-		assertEquals(filteredAgain.size(),2);
+		assertEquals(filteredAgain.size(),1);
 	}
 
 	@Test
 	void testGetMoviesByYearDoubleDouble() {
 		ArrayList<Movie> m = MovieData.getMoviesByYear(2000,1995);
-		assertEquals(m.size(),3);
+		assertEquals(m.size(),1);
 	}
 
 	@Test
 	void testGetMoviesByYearDoubleDoubleMovieArray() {
 		ArrayList<Movie> m = MovieData.getMoviesByTitle("Movie");
 		ArrayList<Movie> filteredAgain = MovieData.getMoviesByYear(2000,1995, m);
-		assertEquals(filteredAgain.size(),3);
+		assertEquals(filteredAgain.size(),0);
 	}
 
 	@Test
