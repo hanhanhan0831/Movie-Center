@@ -42,7 +42,7 @@ public class Comment {
 	}
 	@Override
 	public String toString() {
-		return user + ":"+text+" :"+rating+"/10";
+		return user + " gives it a "+rating+"/10";
 		
 	}
 }

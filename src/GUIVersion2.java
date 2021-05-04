@@ -201,7 +201,7 @@ public class GUIVersion2 extends JFrame implements ActionListener {
 	
 	public static void openViewFavorites(Account a) {
 		JFrame faveFrame = new JFrame("Favorites Window");
-		faveFrame.setSize(150, 200);
+		faveFrame.setSize(150, 300);
 		JPanel favePanel = new JPanel();
 		favePanel.setLayout(new BorderLayout());
 		ArrayList<Movie> faves = FavoritesData.getUserFavorites(a);
